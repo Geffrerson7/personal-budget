@@ -57,10 +57,21 @@ function mostrarResumen() {
 
   console.log("--- Resumen Final ---");
   console.log("Total de movimientos:", nombres.length);
-  console.log("Saldo total:", calcularSaldo());
-  console.log("Total de gastos:", gastos);
-  console.log("Total de ingresos:", ingresos);
+  console.log("Saldo total: $" + calcularSaldo().toFixed(2));
+  console.log("Total de gastos: ", Math.abs(gastos));
+  console.log("Total de ingresos: ", ingresos);
+  console.log("Gasto maximo: ", Math.max(...valores));
+  console.log("Gasto minimo: ", Math.abs(Math.min(...valores)));
 }
 
-registrarMovimiento();
+let continuar = "si";
+
+while (continuar === "si" || continuar === "sí") {
+  registrarMovimiento();
+
+  continuar = prompt(
+    "¿Registrar otro movimiento? (si/no):"
+  ).toLowerCase();
+}
+
 mostrarResumen();
