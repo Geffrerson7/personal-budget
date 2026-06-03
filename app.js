@@ -33,4 +33,34 @@ function registrarMovimiento() {
   console.log("Movimiento registrado.");
 }
 
+function calcularSaldo() {
+  let saldo = 0;
+
+  for (let i = 0; i < valores.length; i++) {
+    saldo = saldo + valores[i];
+  }
+
+  return saldo;
+}
+
+function mostrarResumen() {
+  let ingresos = 0;
+  let gastos = 0;
+
+  for (let i = 0; i < valores.length; i++) {
+    if (valores[i] > 0) {
+      ingresos += valores[i];
+    } else {
+      gastos += valores[i];
+    }
+  }
+
+  console.log("--- Resumen Final ---");
+  console.log("Total de movimientos:", nombres.length);
+  console.log("Saldo total:", calcularSaldo());
+  console.log("Total de gastos:", gastos);
+  console.log("Total de ingresos:", ingresos);
+}
+
 registrarMovimiento();
+mostrarResumen();
