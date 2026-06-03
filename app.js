@@ -46,12 +46,16 @@ function calcularSaldo() {
 function mostrarResumen() {
   let ingresos = 0;
   let gastos = 0;
+  let ingresosRegistrados = [];
+  let gastosRegistrados = [];
 
   for (let i = 0; i < valores.length; i++) {
     if (valores[i] > 0) {
       ingresos += valores[i];
+      ingresosRegistrados.push(valores[i]);
     } else {
       gastos += valores[i];
+      gastosRegistrados.push(valores[i]);
     }
   }
 
@@ -60,8 +64,8 @@ function mostrarResumen() {
   console.log("Saldo total: $" + calcularSaldo().toFixed(2));
   console.log("Total de gastos: ", Math.abs(gastos));
   console.log("Total de ingresos: ", ingresos);
-  console.log("Gasto maximo: ", Math.max(...valores));
-  console.log("Gasto minimo: ", Math.abs(Math.min(...valores)));
+  console.log("Ingreso más alto:", Math.max(...ingresosRegistrados));
+  console.log("Gasto más bajo:", Math.min(...gastosRegistrados));
 }
 
 let continuar = "si";
@@ -69,9 +73,7 @@ let continuar = "si";
 while (continuar === "si" || continuar === "sí") {
   registrarMovimiento();
 
-  continuar = prompt(
-    "¿Registrar otro movimiento? (si/no):"
-  ).toLowerCase();
+  continuar = prompt("¿Registrar otro movimiento? (si/no):").toLowerCase();
 }
 
 mostrarResumen();
