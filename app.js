@@ -33,41 +33,6 @@ function registrarMovimiento() {
   console.log("Movimiento registrado.");
 }
 
-function calcularSaldo() {
-  let saldo = 0;
-
-  for (let i = 0; i < valores.length; i++) {
-    saldo = saldo + valores[i];
-  }
-
-  return saldo;
-}
-
-function mostrarResumen() {
-  let ingresos = 0;
-  let gastos = 0;
-  let ingresosRegistrados = [];
-  let gastosRegistrados = [];
-
-  for (let i = 0; i < valores.length; i++) {
-    if (valores[i] > 0) {
-      ingresos += valores[i];
-      ingresosRegistrados.push(valores[i]);
-    } else {
-      gastos += valores[i];
-      gastosRegistrados.push(valores[i]);
-    }
-  }
-
-  console.log("--- Resumen Final ---");
-  console.log("Total de movimientos:", nombres.length);
-  console.log("Saldo total: $" + calcularSaldo().toFixed(2));
-  console.log("Total de gastos: ", Math.abs(gastos));
-  console.log("Total de ingresos: ", ingresos);
-  console.log("Ingreso más alto:", Math.max(...ingresosRegistrados));
-  console.log("Gasto más bajo:", Math.min(...gastosRegistrados));
-}
-
 let continuar = "si";
 
 while (continuar === "si" || continuar === "sí") {
@@ -76,4 +41,6 @@ while (continuar === "si" || continuar === "sí") {
   continuar = prompt("¿Registrar otro movimiento? (si/no):").toLowerCase();
 }
 
-mostrarResumen();
+// Reporte funcional (C06) — todo del archivo functional-utils.js
+imprimirReporte(nombres, valores);
+console.log("Promedio de ingresos: $" + promedioIngresos(valores).toFixed(2));
