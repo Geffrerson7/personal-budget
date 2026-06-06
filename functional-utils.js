@@ -80,3 +80,13 @@ const desviacionEstandar = (valores) => {
 
   return Math.sqrt(varianza);
 };
+
+const categorizarPorMonto = (valores) => ({
+  bajo: valores.filter((v) => Math.abs(v) < 100),
+
+  medio: valores.filter(
+    (v) => Math.abs(v) >= 100 && Math.abs(v) <= 500
+  ),
+
+  alto: valores.filter((v) => Math.abs(v) > 500),
+});
