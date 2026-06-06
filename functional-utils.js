@@ -22,3 +22,32 @@ const generarValoresReporte = (valores) => [
   totalGastos(valores),
   calcularSaldo(valores),
 ];
+
+const imprimirReporte = (nombres, valores) => {
+  console.log("--- Resumen Final ---");
+
+  valores.forEach((valor, indice) => {
+    const tipo = valor > 0 ? "ingreso" : "gasto";
+
+    console.log(
+      `${indice + 1}. ${nombres[indice]} (${tipo}): $${Math.abs(valor).toFixed(2)}`
+    );
+  });
+
+  const reporte = generarValoresReporte(valores);
+
+  console.log("Total movimientos:", reporte[0]);
+  console.log("Total ingresos: $" + reporte[1].toFixed(2));
+  console.log("Total gastos: $" + Math.abs(reporte[2]).toFixed(2));
+  console.log("Saldo: $" + reporte[3].toFixed(2));
+};
+
+const promedioIngresos = (valores) => {
+  const ingresos = obtenerIngresos(valores);
+
+  if (ingresos.length === 0) {
+    return 0;
+  }
+
+  return totalIngresos(valores) / ingresos.length;
+};
