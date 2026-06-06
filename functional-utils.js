@@ -9,3 +9,16 @@ const buscarPrimerGastoMayor = (valores, monto) =>
 
 const calcularSaldo = (valores) =>
   valores.reduce((acumulador, valor) => acumulador + valor, 0);
+
+const totalIngresos = (valores) =>
+  obtenerIngresos(valores).reduce((acumulador, valor) => acumulador + valor, 0);
+
+const totalGastos = (valores) =>
+  obtenerGastos(valores).reduce((acumulador, valor) => acumulador + valor, 0);
+
+const generarValoresReporte = (valores) => [
+  valores.length,
+  totalIngresos(valores),
+  totalGastos(valores),
+  calcularSaldo(valores),
+];
