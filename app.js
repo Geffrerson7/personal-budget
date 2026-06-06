@@ -44,3 +44,5 @@ while (continuar === "si" || continuar === "sí") {
 // Reporte funcional (C06) — todo del archivo functional-utils.js
 imprimirReporte(nombres, valores);
 console.log("Promedio de ingresos: $" + promedioIngresos(valores).toFixed(2));
+console.log("Mediana: $" + mediana(valores).toFixed(2));
+console.log("Desviación estándar: $" + desviacionEstandar(valores).toFixed(2));

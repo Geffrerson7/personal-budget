@@ -30,7 +30,7 @@ const imprimirReporte = (nombres, valores) => {
     const tipo = valor > 0 ? "ingreso" : "gasto";
 
     console.log(
-      `${indice + 1}. ${nombres[indice]} (${tipo}): $${Math.abs(valor).toFixed(2)}`
+      `${indice + 1}. ${nombres[indice]} (${tipo}): $${Math.abs(valor).toFixed(2)}`,
     );
   });
 
@@ -50,4 +50,33 @@ const promedioIngresos = (valores) => {
   }
 
   return totalIngresos(valores) / ingresos.length;
+};
+
+const mediana = (valores) => {
+  if (valores.length === 0) return 0;
+
+  const ordenados = [...valores].sort((a, b) => a - b);
+  const mitad = Math.floor(ordenados.length / 2);
+
+  if (ordenados.length % 2 === 0) {
+    return (ordenados[mitad - 1] + ordenados[mitad]) / 2;
+  }
+
+  return ordenados[mitad];
+};
+
+const desviacionEstandar = (valores) => {
+  if (valores.length === 0) return 0;
+
+  const promedio =
+    valores.reduce((acc, valor) => acc + valor, 0) / valores.length;
+
+  const sumaCuadrados = valores.reduce(
+    (acc, valor) => acc + Math.pow(valor - promedio, 2),
+    0,
+  );
+
+  const varianza = sumaCuadrados / valores.length;
+
+  return Math.sqrt(varianza);
 };
