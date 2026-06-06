@@ -46,3 +46,9 @@ imprimirReporte(nombres, valores);
 console.log("Promedio de ingresos: $" + promedioIngresos(valores).toFixed(2));
 console.log("Mediana: $" + mediana(valores).toFixed(2));
 console.log("Desviación estándar: $" + desviacionEstandar(valores).toFixed(2));
+
+const categorias = categorizarPorMonto(valores);
+
+console.log("Montos bajos:", categorias.bajo.join(", "));
+console.log("Montos medios:", categorias.medio.join(", "));
+console.log("Montos altos:", categorias.alto.join(", "));
