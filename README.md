@@ -10,90 +10,118 @@ Personal Budget es una aplicación desarrollada en JavaScript que permite regist
 2. Indica si se trata de un ingreso o un gasto.
 3. Ingresa el monto correspondiente.
 4. El sistema valida que:
-   - El nombre no esté vacío.
-   - El tipo sea válido ("ingreso" o "gasto").
-   - El monto sea numérico y mayor que cero.
-   - No exista otro movimiento con el mismo nombre.
+
+   * El nombre no esté vacío.
+   * El tipo sea válido ("ingreso" o "gasto").
+   * El monto sea numérico y mayor que cero.
+   * No exista otro movimiento con el mismo nombre.
 5. Los ingresos se almacenan como valores positivos y los gastos como valores negativos.
 6. El usuario puede registrar múltiples movimientos.
-7. Al finalizar, el sistema muestra un resumen financiero con:
-   - Total de movimientos registrados.
-   - Saldo acumulado.
-   - Total de ingresos.
-   - Total de gastos.
-   - Ingreso más alto registrado.
-   - Gasto más bajo (más negativo) registrado.
+7. Al finalizar, el sistema genera un reporte financiero con métricas y estadísticas.
 
 ---
 
 ## Funciones creadas
 
-### `registrarMovimiento()`
+### Gestión de movimientos
 
-Solicita los datos de un movimiento financiero, valida la información ingresada y almacena los datos en los arreglos correspondientes.
+#### `registrarMovimiento()`
 
-### `calcularSaldo()`
-
-Recorre el arreglo de valores y calcula el saldo total acumulado.
-
-### `mostrarResumen()`
-
-Genera un reporte financiero con estadísticas de los movimientos registrados, incluyendo ingresos, gastos y saldo total.
+Solicita y valida la información de cada movimiento financiero antes de almacenarlo.
 
 ---
 
-## Estructuras de control utilizadas
+### Reportes y cálculos
 
-### Condicionales (`if`, `else if`, `else`)
+#### `imprimirReporte(nombres, valores)`
 
-Se utilizaron para:
+Genera y muestra el reporte financiero completo.
 
-- Validar los datos ingresados por el usuario.
-- Determinar si un movimiento corresponde a un ingreso o un gasto.
-- Clasificar los valores al generar el resumen financiero.
+#### `calcularSaldo(valores)`
 
-Ejemplo:
+Calcula el saldo total acumulado.
+
+#### `totalIngresos(valores)`
+
+Calcula la suma total de ingresos registrados.
+
+#### `totalGastos(valores)`
+
+Calcula la suma total de gastos registrados.
+
+#### `promedioIngresos(valores)`
+
+Calcula el promedio de todos los ingresos registrados.
+
+#### `mediana(valores)`
+
+Obtiene la mediana de los movimientos registrados.
+
+#### `desviacionEstandar(valores)`
+
+Calcula la dispersión de los movimientos respecto al promedio.
+
+---
+
+### Utilidades funcionales
+
+#### `obtenerIngresos(valores)`
+
+Retorna únicamente los ingresos.
+
+#### `obtenerGastos(valores)`
+
+Retorna únicamente los gastos.
+
+#### `montosAbsolutos(valores)`
+
+Convierte todos los montos a valores absolutos.
+
+#### `buscarPrimerGastoMayor(valores, monto)`
+
+Busca el primer gasto cuyo valor absoluto supera el monto indicado.
+
+#### `generarValoresReporte(valores)`
+
+Genera un arreglo con las principales métricas del reporte.
+
+#### `categorizarPorMonto(valores)`
+
+Clasifica los movimientos en categorías:
 
 ```javascript
-if (tipo === "ingreso") {
-  valor = monto;
-} else {
-  valor = -monto;
+{
+  bajo: [...],
+  medio: [...],
+  alto: [...]
 }
 ```
 
-### Bucles (`for`)
+según el valor absoluto de cada movimiento.
 
-Permitieron recorrer los arreglos de movimientos para:
+---
 
-- Calcular el saldo total.
-- Sumar ingresos y gastos.
-- Obtener estadísticas financieras.
+## Métodos funcionales utilizados
 
-Ejemplo:
+Durante el desarrollo se utilizaron diversos métodos funcionales de JavaScript:
 
-```javascript
-for (let i = 0; i < valores.length; i++) {
-  saldo += valores[i];
-}
-```
+* `filter()`
+* `map()`
+* `find()`
+* `reduce()`
+* `forEach()`
+* `sort()`
 
-### Bucles (`while`)
-
-Se utilizó para permitir el registro continuo de movimientos hasta que el usuario decida finalizar.
-
-Ejemplo:
-
-```javascript
-while (continuar === "si" || continuar === "sí") {
-  registrarMovimiento();
-}
-```
+Estos métodos permitieron escribir código más declarativo, legible y reutilizable.
 
 ---
 
 ## Reflexión
 
-Las estructuras de control de flujo fueron fundamentales para organizar la lógica del programa. Los condicionales permitieron validar información y tomar decisiones según el tipo de movimiento ingresado. Los ciclos facilitaron el procesamiento de colecciones de datos sin repetir código manualmente.
+Las estructuras de control de flujo fueron fundamentales para organizar la lógica del programa. Los condicionales permitieron validar información y tomar decisiones según el tipo de movimiento ingresado, mientras que los ciclos facilitaron el procesamiento de colecciones de datos sin repetir código manualmente.
 
-Gracias a estas estructuras fue posible construir una solución clara, escalable y fácil de mantener, separando la captura de datos, la validación y el cálculo de estadísticas en funciones independientes.
+Además, la programación funcional ayudó a simplificar muchas operaciones sobre los arreglos de movimientos. Métodos como `filter()`, `find()` y especialmente `reduce()` permitieron realizar cálculos complejos con menos código y una mejor organización.
+
+El método funcional que me resultó más útil fue **`reduce()`**, ya que permitió calcular saldos, totales, estadísticas y estructuras de datos acumuladas de manera eficiente.
+
+Las funciones puras mejoraron el código al hacerlo más modular, reutilizable y predecible. Cada función recibe datos de entrada y devuelve resultados sin modificar estados externos, lo que facilita las pruebas, el mantenimiento y la comprensión de la aplicación.
