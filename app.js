@@ -42,3 +42,5 @@ console.log("Saldo:", reporte.saldo);
 console.log("Promedio ingresos:", presupuesto.promedioIngresos());
 console.log("Mediana:", presupuesto.mediana());
 console.log("Desviación estándar:", presupuesto.desviacionEstandar());
+console.log("Movimientos registrados:");
+console.table(presupuesto.getMovimientos());
