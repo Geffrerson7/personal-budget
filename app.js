@@ -9,25 +9,35 @@ presupuesto.agregar(new Movimiento('Freelance', 'ingreso', 500));
 
 function liHTML(m) {
   const ingreso = m.esIngreso();
-  
+
   let caja;
   let texto;
   let signo;
 
   if (ingreso) {
-    caja = 'bg-green-50 border-green-500';
-    texto = 'text-green-700';
+    caja =
+      'bg-green-50 dark:bg-green-900/30 border-green-500';
+    texto = 'text-green-700 dark:text-green-300';
     signo = '+';
   } else {
-    caja = 'bg-red-50 border-red-500';
-    texto = 'text-red-700';
+    caja =
+      'bg-red-50 dark:bg-red-900/30 border-red-500';
+    texto = 'text-red-700 dark:text-red-300';
     signo = '-';
   }
 
-  return `<li class="flex items-center justify-between p-3 border-l-4 rounded ${caja}">
-            <span class="text-gray-800"><span class="font-medium">${m.nombre}</span> <span class="text-xs text-gray-500">(${m.tipo})</span></span>
-            <span class="font-semibold ${texto}">${signo}$${m.valor.toFixed(2)}</span>
-          </li>`;
+  return `
+    <li class="flex items-center justify-between p-3 border-l-4 rounded ${caja}">
+      <span class="text-gray-800 dark:text-gray-100">
+        <span class="font-medium">${m.nombre}</span>
+        <span class="text-xs text-gray-500 dark:text-gray-400">(${m.tipo})</span>
+      </span>
+
+      <span class="font-semibold ${texto}">
+        ${signo}$${m.valor.toFixed(2)}
+      </span>
+    </li>
+  `;
 }
 
 function render() {
