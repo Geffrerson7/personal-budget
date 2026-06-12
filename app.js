@@ -18,7 +18,7 @@ function registrarMovimiento() {
   }
 
   presupuesto.agregar(movimiento);
-  
+
   if (presupuesto.gastosSuperanLimite()) {
     alert("Advertencia: los gastos superan el 80% de los ingresos.");
   }
@@ -36,11 +36,11 @@ const reporte = presupuesto.resumen();
 
 console.log("--- Resumen Final ---");
 console.log("Cantidad:", reporte.cantidad);
-console.log("Ingresos:", reporte.ingresos);
-console.log("Gastos:", reporte.gastos);
-console.log("Saldo:", reporte.saldo);
-console.log("Promedio ingresos:", presupuesto.promedioIngresos());
-console.log("Mediana:", presupuesto.mediana());
-console.log("Desviación estándar:", presupuesto.desviacionEstandar());
+console.log("Ingresos:", reporte.ingresos.toFixed(2));
+console.log("Gastos:", reporte.gastos.toFixed(2));
+console.log("Saldo:", reporte.saldo.toFixed(2));
+console.log("Promedio ingresos:", reporte.promedioIngresos.toFixed(2));
+console.log("Mediana:", reporte.mediana.toFixed(2));
+console.log("Desviación estándar:", reporte.desviacionEstandar.toFixed(2));
 console.log("Movimientos registrados:");
 console.table(presupuesto.getMovimientos());
