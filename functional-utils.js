@@ -1,92 +1,128 @@
-const obtenerIngresos = (valores) => valores.filter((valor) => valor > 0);
+const obtenerIngresos = (movimientos) =>
+  movimientos.filter((movimiento) => movimiento.tipo === "ingreso");
 
-const obtenerGastos = (valores) => valores.filter((valor) => valor < 0);
+const obtenerGastos = (movimientos) =>
+  movimientos.filter((movimiento) => movimiento.tipo === "gasto");
 
-const montosAbsolutos = (valores) => valores.map((valor) => Math.abs(valor));
+const buscarPrimerGastoMayor = (movimientos, monto) =>
+  obtenerGastos(movimientos).find((movimiento) => movimiento.valor > monto);
 
-const buscarPrimerGastoMayor = (valores, monto) =>
-  valores.find((valor) => valor < -monto);
+const calcularSaldo = (movimientos) =>
+  totalIngresos(movimientos) - totalGastos(movimientos);
 
-const calcularSaldo = (valores) =>
-  valores.reduce((acumulador, valor) => acumulador + valor, 0);
+const totalIngresos = (movimientos) =>
+  obtenerIngresos(movimientos).reduce(
+    (acumulador, movimiento) => acumulador + movimiento.valor,
+    0,
+  );
 
-const totalIngresos = (valores) =>
-  obtenerIngresos(valores).reduce((acumulador, valor) => acumulador + valor, 0);
+const totalGastos = (movimientos) =>
+  obtenerGastos(movimientos).reduce(
+    (acumulador, movimiento) => acumulador + movimiento.valor,
+    0,
+  );
 
-const totalGastos = (valores) =>
-  obtenerGastos(valores).reduce((acumulador, valor) => acumulador + valor, 0);
-
-const generarValoresReporte = (valores) => [
-  valores.length,
-  totalIngresos(valores),
-  totalGastos(valores),
-  calcularSaldo(valores),
-];
-
-const imprimirReporte = (nombres, valores) => {
-  console.log("--- Resumen Final ---");
-
-  valores.forEach((valor, indice) => {
-    const tipo = valor > 0 ? "ingreso" : "gasto";
-
-    console.log(
-      `${indice + 1}. ${nombres[indice]} (${tipo}): $${Math.abs(valor).toFixed(2)}`,
-    );
-  });
-
-  const reporte = generarValoresReporte(valores);
-
-  console.log("Total movimientos:", reporte[0]);
-  console.log("Total ingresos: $" + reporte[1].toFixed(2));
-  console.log("Total gastos: $" + Math.abs(reporte[2]).toFixed(2));
-  console.log("Saldo: $" + reporte[3].toFixed(2));
-};
-
-const promedioIngresos = (valores) => {
-  const ingresos = obtenerIngresos(valores);
+const promedioIngresos = (movimientos) => {
+  const ingresos = obtenerIngresos(movimientos);
 
   if (ingresos.length === 0) {
     return 0;
   }
 
-  return totalIngresos(valores) / ingresos.length;
+  return totalIngresos(movimientos) / ingresos.length;
 };
 
-const mediana = (valores) => {
-  if (valores.length === 0) return 0;
+const mediana = (movimientos) => {
+  if (movimientos.length === 0) return 0;
 
-  const ordenados = [...valores].sort((a, b) => a - b);
+  const ordenados = [...movimientos].sort(
+    (a, b) => a.valor - b.valor
+  );
+
   const mitad = Math.floor(ordenados.length / 2);
 
   if (ordenados.length % 2 === 0) {
-    return (ordenados[mitad - 1] + ordenados[mitad]) / 2;
+    return (
+      ordenados[mitad - 1].valor +
+      ordenados[mitad].valor
+    ) / 2;
   }
 
-  return ordenados[mitad];
+  return ordenados[mitad].valor;
 };
 
-const desviacionEstandar = (valores) => {
-  if (valores.length === 0) return 0;
+const desviacionEstandar = (movimientos) => {
+  if (movimientos.length === 0) return 0;
 
   const promedio =
-    valores.reduce((acc, valor) => acc + valor, 0) / valores.length;
+    movimientos.reduce((acc, movimiento) => acc + movimiento.valor, 0) /
+    movimientos.length;
 
-  const sumaCuadrados = valores.reduce(
-    (acc, valor) => acc + Math.pow(valor - promedio, 2),
+  const sumaCuadrados = movimientos.reduce(
+    (acc, movimiento) => acc + Math.pow(movimiento.valor - promedio, 2),
     0,
   );
 
-  const varianza = sumaCuadrados / valores.length;
+  const varianza = sumaCuadrados / movimientos.length;
 
   return Math.sqrt(varianza);
 };
 
-const categorizarPorMonto = (valores) => ({
-  bajo: valores.filter((v) => Math.abs(v) < 100),
+const agruparPorTipo = (movimientos) =>
+  movimientos.reduce(
+    (grupos, movimiento) => {
+      if (movimiento.tipo === "ingreso") {
+        grupos.ingresos.push(movimiento);
+      } else {
+        grupos.gastos.push(movimiento);
+      }
 
-  medio: valores.filter(
-    (v) => Math.abs(v) >= 100 && Math.abs(v) <= 500
-  ),
+      return grupos;
+    },
+    {
+      ingresos: [],
+      gastos: [],
+    },
+  );
 
-  alto: valores.filter((v) => Math.abs(v) > 500),
-});
+const generarValoresReporte = (movimientos) => [
+  movimientos.length,
+  totalIngresos(movimientos),
+  totalGastos(movimientos),
+  calcularSaldo(movimientos),
+];
+
+const imprimirReporte = (movimientos) => {
+  console.log("--- Resumen Final ---");
+
+  movimientos.forEach((movimiento, indice) => {
+    console.log(`  ${indice + 1}. ${movimiento.datosMovimiento()}`);
+  });
+
+  const reporte = generarValoresReporte(movimientos);
+  const grupos = agruparPorTipo(movimientos);
+
+  console.log("Total movimientos:", reporte[0]);
+  console.log("Total ingresos: $" + reporte[1].toFixed(2));
+  console.log("Total gastos: $" + Math.abs(reporte[2]).toFixed(2));
+  console.log("Saldo: $" + reporte[3].toFixed(2));
+  console.log(
+    "Promedio de ingresos: $" + promedioIngresos(movimientos).toFixed(2),
+  );
+  console.log("Mediana: $" + mediana(movimientos).toFixed(2));
+  console.log(
+    "Desviación estándar: $" + desviacionEstandar(movimientos).toFixed(2),
+  );
+  console.log("Ingresos:");
+  grupos.ingresos.forEach((movimiento) =>
+    console.log(movimiento.datosMovimiento()),
+  );
+  console.log("Gastos:");
+  grupos.gastos.forEach((movimiento) =>
+    console.log(movimiento.datosMovimiento()),
+  );
+};
+
+//Reto autónomo: agruparPorTipo(movimientos) → { ingresos: [...], gastos: [...] } con .reduce.
+
+//Reto autónomo: método antiguedadEnDias() que calcule días desde this.fecha hasta hoy.
