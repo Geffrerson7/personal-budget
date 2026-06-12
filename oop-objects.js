@@ -41,6 +41,10 @@ class Presupuesto {
     this.movimientos = [];
   }
 
+  getMovimientos() {
+    return this.movimientos;
+  }
+
   agregar(movimiento) {
     this.movimientos.push(movimiento);
   }
