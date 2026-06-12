@@ -35,7 +35,7 @@ function liHTML(m) {
     >
       <span class="text-gray-800 dark:text-gray-100">
         <span class="font-medium">${m.nombre}</span>
-        <span class="text-xs text-gray-500 dark:text-gray-400">
+        <span class="text-xs ${texto}">
           (${m.tipo})
         </span>
       </span>
@@ -66,6 +66,23 @@ form.addEventListener('submit', function (e) {
   const nombre = document.getElementById('nombre').value;
   const tipo   = document.getElementById('tipo').value;
   const valor  = parseFloat(document.getElementById('monto').value);
+
+  // Validación de campos vacíos o inválidos
+  if (!nombre || !tipo || isNaN(valor) || valor <= 0) {
+    alert('Datos inválidos. Intenta de nuevo.');
+    return;
+  }
+
+  // Validación de duplicados
+  const existe = presupuesto.movimientos.some(
+    (m) => m.nombre.toLowerCase() === nombre.toLowerCase()
+  );
+
+  if (existe) {
+    alert('Ya existe un movimiento con ese nombre.');
+    return;
+  }
+
   presupuesto.agregar(new Movimiento(nombre, tipo, valor));
   render();
   e.target.reset();
