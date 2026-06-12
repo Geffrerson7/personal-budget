@@ -1,46 +1,57 @@
+const form  = document.getElementById('form-mov');
+const lista = document.getElementById('lista');
 const presupuesto = new Presupuesto();
 
-function registrarMovimiento() {
-  const nombre = prompt("Nombre del movimiento:");
-  const tipo = prompt("Tipo (ingreso / gasto):").toLowerCase();
-  const valor = parseFloat(prompt("Monto:"));
+// Movimientos de ejemplo
+presupuesto.agregar(new Movimiento('Salario', 'ingreso', 3000));
+presupuesto.agregar(new Movimiento('Cena', 'gasto', 45.50));
+presupuesto.agregar(new Movimiento('Freelance', 'ingreso', 500));
 
-  if (presupuesto.buscarPorNombre(nombre)) {
-    alert("Este movimiento ya fue registrado.");
-    return;
-  }
-
-  const movimiento = new Movimiento(nombre, tipo, valor);
-
-  if (!movimiento.esValido()) {
-    alert("Datos inválidos.");
-    return;
-  }
-
-  presupuesto.agregar(movimiento);
+function liHTML(m) {
+  const ingreso = m.esIngreso();
   
-  if (presupuesto.gastosSuperanLimite()) {
-    alert("Advertencia: los gastos superan el 80% de los ingresos.");
+  let caja;
+  let texto;
+  let signo;
+
+  if (ingreso) {
+    caja = 'bg-green-50 border-green-500';
+    texto = 'text-green-700';
+    signo = '+';
+  } else {
+    caja = 'bg-red-50 border-red-500';
+    texto = 'text-red-700';
+    signo = '-';
   }
+
+  return `<li class="flex items-center justify-between p-3 border-l-4 rounded ${caja}">
+            <span class="text-gray-800"><span class="font-medium">${m.nombre}</span> <span class="text-xs text-gray-500">(${m.tipo})</span></span>
+            <span class="font-semibold ${texto}">${signo}$${m.valor.toFixed(2)}</span>
+          </li>`;
 }
 
-let continuar = "si";
+function render() {
+  // 1. RENDERIZADO DE LA LISTA
+  lista.innerHTML = presupuesto.movimientos.map(liHTML).join('');
 
-while (continuar === "si" || continuar === "sí") {
-  registrarMovimiento();
+  // 2. RENDERIZADO DEL SALDO
+  document.getElementById('saldo').textContent = '$' + presupuesto.saldo().toFixed(2);
 
-  continuar = prompt("¿Registrar otro movimiento? (si/no):").toLowerCase();
+  // 3. RENDERIZADO DEL INGRESOS
+  document.getElementById('ingresos').textContent = '$' + presupuesto.totalIngresos().toFixed(2);
+
+  // 4. RENDERIZADO DEL GASRTOS
+  document.getElementById('gastos').textContent = '$' + presupuesto.totalGastos().toFixed(2);
 }
 
-const reporte = presupuesto.resumen();
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nombre = document.getElementById('nombre').value;
+  const tipo   = document.getElementById('tipo').value;
+  const valor  = parseFloat(document.getElementById('monto').value);
+  presupuesto.agregar(new Movimiento(nombre, tipo, valor));
+  render();
+  e.target.reset();
+});
 
-console.log("--- Resumen Final ---");
-console.log("Cantidad:", reporte.cantidad);
-console.log("Ingresos:", reporte.ingresos);
-console.log("Gastos:", reporte.gastos);
-console.log("Saldo:", reporte.saldo);
-console.log("Promedio ingresos:", presupuesto.promedioIngresos());
-console.log("Mediana:", presupuesto.mediana());
-console.log("Desviación estándar:", presupuesto.desviacionEstandar());
-console.log("Movimientos registrados:");
-console.table(presupuesto.getMovimientos());
+render();
