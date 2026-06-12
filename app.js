@@ -27,10 +27,17 @@ function liHTML(m) {
   }
 
   return `
-    <li class="flex items-center justify-between p-3 border-l-4 rounded ${caja}">
+    <li
+      class="flex items-center justify-between p-3 border-l-4 rounded
+      ${caja}
+      transition-all duration-200
+      hover:scale-[1.02] hover:shadow-md hover:translate-x-1"
+    >
       <span class="text-gray-800 dark:text-gray-100">
         <span class="font-medium">${m.nombre}</span>
-        <span class="text-xs text-gray-500 dark:text-gray-400">(${m.tipo})</span>
+        <span class="text-xs text-gray-500 dark:text-gray-400">
+          (${m.tipo})
+        </span>
       </span>
 
       <span class="font-semibold ${texto}">
