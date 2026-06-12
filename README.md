@@ -2,126 +2,202 @@
 
 ## Descripción
 
-Personal Budget es una aplicación desarrollada en JavaScript que permite registrar movimientos financieros desde consola. El usuario puede ingresar movimientos de tipo **ingreso** o **gasto**, almacenar la información en memoria y obtener un resumen financiero con estadísticas relevantes.
-
-## ¿Cómo funciona el programa?
-
-1. El usuario ingresa el nombre del movimiento.
-2. Indica si se trata de un ingreso o un gasto.
-3. Ingresa el monto correspondiente.
-4. El sistema valida que:
-
-   * El nombre no esté vacío.
-   * El tipo sea válido ("ingreso" o "gasto").
-   * El monto sea numérico y mayor que cero.
-   * No exista otro movimiento con el mismo nombre.
-5. Los ingresos se almacenan como valores positivos y los gastos como valores negativos.
-6. El usuario puede registrar múltiples movimientos.
-7. Al finalizar, el sistema genera un reporte financiero con métricas y estadísticas.
+Personal Budget es una aplicación desarrollada en JavaScript para registrar ingresos y gastos desde consola. Permite administrar movimientos financieros, obtener estadísticas y generar reportes utilizando Programación Orientada a Objetos (POO), encapsulación y métodos funcionales.
 
 ---
 
-## Funciones creadas
+## ¿Cómo funciona?
 
-### Gestión de movimientos
+1. El usuario registra un movimiento indicando:
+   - Nombre
+   - Tipo (ingreso o gasto)
+   - Monto
 
-#### `registrarMovimiento()`
+2. El sistema valida:
+   - Que el nombre no esté vacío.
+   - Que el tipo sea válido.
+   - Que el monto sea numérico y mayor que cero.
+   - Que no exista otro movimiento con el mismo nombre.
 
-Solicita y valida la información de cada movimiento financiero antes de almacenarlo.
+3. El movimiento se almacena dentro de un presupuesto.
 
----
+4. El sistema calcula:
+   - Total de ingresos.
+   - Total de gastos.
+   - Saldo disponible.
+   - Promedio de ingresos.
+   - Mediana de movimientos.
+   - Desviación estándar.
+   - Agrupación de movimientos por tipo.
 
-### Reportes y cálculos
-
-#### `imprimirReporte(nombres, valores)`
-
-Genera y muestra el reporte financiero completo.
-
-#### `calcularSaldo(valores)`
-
-Calcula el saldo total acumulado.
-
-#### `totalIngresos(valores)`
-
-Calcula la suma total de ingresos registrados.
-
-#### `totalGastos(valores)`
-
-Calcula la suma total de gastos registrados.
-
-#### `promedioIngresos(valores)`
-
-Calcula el promedio de todos los ingresos registrados.
-
-#### `mediana(valores)`
-
-Obtiene la mediana de los movimientos registrados.
-
-#### `desviacionEstandar(valores)`
-
-Calcula la dispersión de los movimientos respecto al promedio.
+5. Si los gastos superan el 80% de los ingresos, se muestra una advertencia.
 
 ---
 
-### Utilidades funcionales
+# Modelo Orientado a Objetos
 
-#### `obtenerIngresos(valores)`
+## Clase Movimiento
 
-Retorna únicamente los ingresos.
+Representa una operación financiera individual.
 
-#### `obtenerGastos(valores)`
+### Propiedades
 
-Retorna únicamente los gastos.
+- `nombre`
+- `tipo`
+- `valor`
+- `fecha`
 
-#### `montosAbsolutos(valores)`
+### Métodos
 
-Convierte todos los montos a valores absolutos.
+- `esIngreso()`
+- `esGasto()`
+- `esValido()`
+- `datosMovimiento()`
 
-#### `buscarPrimerGastoMayor(valores, monto)`
+---
 
-Busca el primer gasto cuyo valor absoluto supera el monto indicado.
+## Clase Presupuesto
 
-#### `generarValoresReporte(valores)`
+Administra la colección de movimientos y concentra toda la lógica financiera.
 
-Genera un arreglo con las principales métricas del reporte.
+### Métodos de gestión
 
-#### `categorizarPorMonto(valores)`
+- `agregar()`
+- `eliminar()`
+- `buscarPorNombre()`
 
-Clasifica los movimientos en categorías:
+### Métodos de consulta
+
+- `obtenerIngresos()`
+- `obtenerGastos()`
+
+### Métodos de cálculo
+
+- `totalIngresos()`
+- `totalGastos()`
+- `saldo()`
+- `promedioIngresos()`
+- `mediana()`
+- `desviacionEstandar()`
+
+### Métodos de análisis
+
+- `agruparPorTipo()`
+- `buscarPrimerGastoMayor()`
+- `gastosSuperanLimite()`
+
+### Reportes
+
+- `resumen()`
+
+---
+
+# Encapsulación aplicada
+
+Inicialmente los movimientos se almacenaban en un arreglo global y las operaciones financieras se encontraban en funciones independientes.
+
+Posteriormente se refactorizó la aplicación para encapsular los datos y comportamientos dentro de la clase `Presupuesto`.
+
+### Antes
 
 ```javascript
-{
-  bajo: [...],
-  medio: [...],
-  alto: [...]
-}
+let movimientos = [];
+
+totalIngresos(movimientos);
+totalGastos(movimientos);
+calcularSaldo(movimientos);
 ```
 
-según el valor absoluto de cada movimiento.
+### Después
+
+```javascript
+const presupuesto = new Presupuesto();
+
+presupuesto.totalIngresos();
+presupuesto.totalGastos();
+presupuesto.saldo();
+```
+
+Esto permitió:
+
+- Reducir variables globales.
+- Mejorar la cohesión.
+- Facilitar el mantenimiento.
+- Centralizar las reglas de negocio.
 
 ---
 
-## Métodos funcionales utilizados
+# Métodos funcionales utilizados
 
-Durante el desarrollo se utilizaron diversos métodos funcionales de JavaScript:
+Durante el desarrollo se aplicaron conceptos de programación funcional utilizando:
 
-* `filter()`
-* `map()`
-* `find()`
-* `reduce()`
-* `forEach()`
-* `sort()`
+- `filter()`
+- `find()`
+- `reduce()`
+- `forEach()`
+- `sort()`
 
-Estos métodos permitieron escribir código más declarativo, legible y reutilizable.
+### Método más útil
+
+El método funcional que resultó más útil fue `reduce()`, ya que permitió implementar:
+
+- Total de ingresos.
+- Total de gastos.
+- Saldo.
+- Agrupación por tipo.
+- Cálculos estadísticos.
 
 ---
 
-## Reflexión
+# Logros adicionales
 
-Las estructuras de control de flujo fueron fundamentales para organizar la lógica del programa. Los condicionales permitieron validar información y tomar decisiones según el tipo de movimiento ingresado, mientras que los ciclos facilitaron el procesamiento de colecciones de datos sin repetir código manualmente.
+## Validación de dominio
 
-Además, la programación funcional ayudó a simplificar muchas operaciones sobre los arreglos de movimientos. Métodos como `filter()`, `find()` y especialmente `reduce()` permitieron realizar cálculos complejos con menos código y una mejor organización.
+Se implementó el método:
 
-El método funcional que me resultó más útil fue **`reduce()`**, ya que permitió calcular saldos, totales, estadísticas y estructuras de datos acumuladas de manera eficiente.
+```javascript
+esValido()
+```
 
-Las funciones puras mejoraron el código al hacerlo más modular, reutilizable y predecible. Cada función recibe datos de entrada y devuelve resultados sin modificar estados externos, lo que facilita las pruebas, el mantenimiento y la comprensión de la aplicación.
+que valida:
+
+- Nombre válido.
+- Tipo válido.
+- Valor numérico positivo.
+
+Antes de agregar cualquier movimiento al presupuesto.
+
+---
+
+## Control de gastos
+
+Se implementó:
+
+```javascript
+gastosSuperanLimite()
+```
+
+que detecta cuando los gastos representan más del 80% de los ingresos y genera una advertencia para el usuario.
+
+---
+
+# Beneficios obtenidos
+
+- Aplicación de Programación Orientada a Objetos.
+- Aplicación de Encapsulación.
+- Aplicación de Programación Funcional.
+- Validaciones de dominio.
+- Mejor organización del código.
+- Mayor reutilización de componentes.
+- Menor acoplamiento entre módulos.
+- Código más mantenible y escalable.
+
+---
+
+# Reflexión
+
+Las estructuras de control de flujo permitieron validar datos, controlar la interacción con el usuario y procesar colecciones de movimientos de forma eficiente.
+
+La programación funcional simplificó las operaciones sobre colecciones mediante métodos como `filter()`, `find()` y `reduce()`.
+
+La Programación Orientada a Objetos permitió agrupar datos y comportamientos relacionados dentro de las clases `Movimiento` y `Presupuesto`, logrando una solución más organizada, mantenible y cercana a escenarios reales de desarrollo de software.
